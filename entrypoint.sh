@@ -34,7 +34,6 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   export HELM_EXPERIMENTAL_OCI=1
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
-  curl -i https://${REGISTRY}
   echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
   helm registry login -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD} ${REGISTRY} # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
