@@ -83,4 +83,6 @@ cd ${CHART_FOLDER}
 helm lint .
 helm package . ${REGISTRY_APPVERSION} ${REGISTRY_VERSION} ${UPDATE_DEPENDENCIES}
 helm inspect chart *.tgz
+
+echo "DOING CM-PUSH"
 helm cm-push *.tgz ${REGISTRY_URL} ${REGISTRY_USERNAME} ${REGISTRY_PASSWORD} ${REGISTRY_ACCESS_TOKEN} ${FORCE}
