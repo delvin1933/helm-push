@@ -87,4 +87,8 @@ helm inspect chart *.tgz
 
 echo "DOING CM-PUSH"
 
-helm cm-push *.tgz ${REGISTRY_URL} ${REGISTRY_USERNAME} ${REGISTRY_PASSWORD} ${REGISTRY_ACCESS_TOKEN} ${FORCE}
+helm repo add chartmuseum ${REGISTRY_URL}
+export HELM_REPO_USERNAME=${REGISTRY_USERNAME}
+export HELM_REPO_PASSWORD=${REGISTRY_PASSWORD}
+
+helm cm-push *.tgz chartmuseum ${FORCE}
