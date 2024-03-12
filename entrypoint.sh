@@ -35,8 +35,8 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
   curl -i https://${REGISTRY}
-  echo "Login on registry ${REGISTRY}"
-  echo "${REGISTRY_ACCESS_TOKEN}" | helm registry login -u ${REGISTRY_USERNAME} --password-stdin ${REGISTRY} # Authenticate registry
+  echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
+  helm registry login -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD} ${REGISTRY} # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
   PKG_RESPONSE=$(helm package $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
   echo "$PKG_RESPONSE"
