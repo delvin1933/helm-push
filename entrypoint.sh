@@ -35,7 +35,7 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
   echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
-  helm registry login -u ${REGISTRY_USERNAME} -p ${REGISTRY_PASSWORD} ${REGISTRY} # Authenticate registry
+  helm registry login ${REGISTRY} --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}  # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
   PKG_RESPONSE=$(helm package $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
   echo "$PKG_RESPONSE"
@@ -85,10 +85,14 @@ helm lint .
 helm package . ${REGISTRY_APPVERSION} ${REGISTRY_VERSION} ${UPDATE_DEPENDENCIES}
 helm inspect chart *.tgz
 
-echo "DOING CM-PUSH"
+echo "ADDING REPO"
 
 helm repo add chartmuseum ${REGISTRY_URL}
+
+echo "DOING CM-PUSH"
+
+
 export HELM_REPO_USERNAME=${REGISTRY_USERNAME}
 export HELM_REPO_PASSWORD=${REGISTRY_PASSWORD}
 
-helm cm-push *.tgz chartmuseum ${FORCE}
+helm cm-push ${FORCE} *.tgz chartmuseum
