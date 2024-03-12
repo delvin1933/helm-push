@@ -91,7 +91,6 @@ helm repo add chartmuseum ${REGISTRY_URL}
 
 echo "DOING CM-PUSH"
 
-
 export HELM_REPO_USERNAME=${REGISTRY_USERNAME}
 export HELM_REPO_PASSWORD=${REGISTRY_PASSWORD}
 
