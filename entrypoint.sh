@@ -31,7 +31,7 @@ else
 fi
 
 
-if [! -z "${CA_CRT}" ]; then
+if [ "${CA_CRT}" ]; then
   echo  ${CA_CRT} > ca.crt
 fi
 
