@@ -33,7 +33,7 @@ fi
 CA_OPTIONS=""
 
 if [ "${CA_CRT}" ]; then
-  echo ${CA_CRT} > ca.crt
+  echo ${CA_CRT} | base64 --decode > ca.crt
   CA_OPTIONS="--ca-file ca.crt"
   cat ca.crt
 fi
