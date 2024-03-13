@@ -30,18 +30,23 @@ else
   UPDATE_DEPENDENCIES=""
 fi
 
+
+if [! -z "${CA_CRT}" ]; then
+  echo  ${CA_CRT} > ca.crt
+fi
+
 if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   export HELM_EXPERIMENTAL_OCI=1
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
   echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
-  helm registry login ${REGISTRY} --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}  # Authenticate registry
+  echo "${REGISTRY_PASSWORD}" | helm registry login --ca-file ca.crt ${REGISTRY} --username ${REGISTRY_USERNAME} --password-stdin # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
   PKG_RESPONSE=$(helm package $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
   echo "$PKG_RESPONSE"
   CHART_TAR_GZ=$(basename "$PKG_RESPONSE") # extract tar name from helm package stdout
   echo "Pushing chart $CHART_TAR_GZ to '$REGISTRY_URL'"
-  helm push "$CHART_TAR_GZ" "$REGISTRY_URL"
+  helm push --ca-file ca.crt "$CHART_TAR_GZ" "$REGISTRY_URL"
   echo "Successfully pushed chart $CHART_TAR_GZ to '$REGISTRY_URL'"
   exit 0
 fi

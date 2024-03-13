@@ -69,3 +69,4 @@ runs:
     USE_OCI_REGISTRY: ${{ inputs.useOCIRegistry }}
     UPDATE_DEPENDENCIES: ${{ inputs.update-dependencies }}
     ADD_REPOSITORIES: ${{ inputs.add-repositories }}
+    CA_CRT: ${{ inputs.ca_cert }}
