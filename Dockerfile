@@ -13,4 +13,4 @@ RUN apk add --virtual .helm-build-deps git make \
     && apk del --purge .helm-build-deps
 COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"] 
+ENTRYPOINT ["/bin/sh"]
