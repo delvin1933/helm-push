@@ -38,6 +38,9 @@ if [ "${CA_CRT}" ]; then
   cat ca.crt
 fi
 
+echo "WHAT IS IN ENV"
+env
+
 if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   export HELM_EXPERIMENTAL_OCI=1
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
