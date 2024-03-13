@@ -46,7 +46,7 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
   echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
-  echo "${REGISTRY_PASSWORD}" | helm registry login ${CA_OPTIONS} ${REGISTRY} --username ${REGISTRY_USERNAME} --password-stdin # Authenticate registry
+  echo "${REGISTRY_PASSWORD}" | helm registry login ${CA_OPTIONS} https://${REGISTRY} --username ${REGISTRY_USERNAME} --password-stdin # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
   if [ "$REGISTRY_VERSION" ]; then
     echo "Version is defined, using as parameter."
