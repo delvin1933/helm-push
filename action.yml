@@ -54,6 +54,10 @@ inputs:
     #     private https//private.internal --username private --password 'bulls eye'
     #     ...
     default: ''
+  registry-ca-cert:
+    description: 'Optional CA for registry'
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -69,4 +73,4 @@ runs:
     USE_OCI_REGISTRY: ${{ inputs.useOCIRegistry }}
     UPDATE_DEPENDENCIES: ${{ inputs.update-dependencies }}
     ADD_REPOSITORIES: ${{ inputs.add-repositories }}
-    CA_CRT: ${{ inputs.ca_cert }}
+    CA_CRT: ${{ inputs.registry-ca-cert }}
