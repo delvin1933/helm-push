@@ -33,8 +33,9 @@ fi
 CA_OPTIONS=""
 
 if [ "${CA_CRT}" ]; then
-  echo  ${CA_CRT} > ~/ca.crt
-  CA_OPTIONS="--ca-file ~/ca.crt"
+  echo ${CA_CRT} > ca.crt
+  CA_OPTIONS="--ca-file ca.crt"
+  cat ca.crt
 fi
 
 if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
@@ -42,7 +43,7 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
   echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
-  echo "${REGISTRY_PASSWORD}" | helm registry login $CA_OPTIONS ${REGISTRY} --username ${REGISTRY_USERNAME} --password-stdin # Authenticate registry
+  echo "${REGISTRY_PASSWORD}" | helm registry login ${CA_OPTIONS} ${REGISTRY} --username ${REGISTRY_USERNAME} --password-stdin # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
   if [ "$REGISTRY_VERSION" ]; then
     echo "Version is defined, using as parameter."
@@ -52,7 +53,7 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "$PKG_RESPONSE"
   CHART_TAR_GZ=$(basename "$PKG_RESPONSE") # extract tar name from helm package stdout
   echo "Pushing chart $CHART_TAR_GZ to '$REGISTRY_URL'"
-  helm push $CA_OPTIONS "$CHART_TAR_GZ" "$REGISTRY_URL"
+  helm push ${CA_OPTIONS} "$CHART_TAR_GZ" "$REGISTRY_URL"
   echo "Successfully pushed chart $CHART_TAR_GZ to '$REGISTRY_URL'"
   exit 0
 fi
