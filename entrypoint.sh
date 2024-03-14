@@ -35,21 +35,13 @@ CA_OPTIONS=""
 if [ "${CA_CRT}" ]; then
   echo ${CA_CRT} | base64 -d > ca.crt
   CA_OPTIONS="--ca-file ca.crt"
-  cat ca.crt
 fi
-
-echo 'IP A'
-
-ip a
-
-echo "WHAT IS IN ENV"
-env
 
 if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   export HELM_EXPERIMENTAL_OCI=1
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
-  echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
+  echo "Login on registry ${REGISTRY} "
   echo "${REGISTRY_PASSWORD}" | helm registry login ${CA_OPTIONS} https://${REGISTRY} --username ${REGISTRY_USERNAME} --password-stdin # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
   PKG_RESPONSE=$(helm package $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
@@ -105,8 +97,5 @@ echo "ADDING REPO"
 helm repo add chartmuseum ${REGISTRY_URL}
 
 echo "DOING CM-PUSH"
-
-export HELM_REPO_USERNAME=${REGISTRY_USERNAME}
-export HELM_REPO_PASSWORD=${REGISTRY_PASSWORD}
 
 helm cm-push ${FORCE} *.tgz chartmuseum
