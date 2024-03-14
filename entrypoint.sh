@@ -38,6 +38,10 @@ if [ "${CA_CRT}" ]; then
   cat ca.crt
 fi
 
+echo 'IP A'
+
+ip a
+
 echo "WHAT IS IN ENV"
 env
 
