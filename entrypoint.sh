@@ -37,7 +37,11 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "Login on registry ${REGISTRY} with username ${REGISTRY_USERNAME}"
   helm registry login ${REGISTRY} --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}  # Authenticate registry
   echo "Packaging chart '$CHART_FOLDER'"
-  PKG_RESPONSE=$(helm package $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
+  if [ "$REGISTRY_VERSION" ]; then
+    echo "Version is defined, using as parameter."
+    REGISTRY_VERSION="--version ${REGISTRY_VERSION}"
+  fi
+  PKG_RESPONSE=$(helm package $REGISTRY_VERSION $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
   echo "$PKG_RESPONSE"
   CHART_TAR_GZ=$(basename "$PKG_RESPONSE") # extract tar name from helm package stdout
   echo "Pushing chart $CHART_TAR_GZ to '$REGISTRY_URL'"
