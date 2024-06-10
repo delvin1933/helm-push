@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM dh2wltsh.gra7.container-registry.ovh.net/docker-mirror/library/alpine:3
 
 ENV XDG_DATA_HOME=/opt/xdg
 ENV XDG_CACHE_HOME=/opt/xdg-cache
